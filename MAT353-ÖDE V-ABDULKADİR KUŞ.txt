@@ -1,0 +1,96 @@
+import math
+import matplotlib.pyplot as plot
+
+e = math.e
+
+def function1(x):
+    return pow(e, x) - 2 * pow(x, 2) + 3 * x - 2
+
+def function1_derivative(x):
+    return pow(e, x) - 4 * x + 3
+
+def regula_falsi_function(x):
+    return math.cos(x) - x
+
+Xn = []
+hata_degerleri = []
+prev = 0 #başlangıç değeri olarak 0'dan başlattık
+curr = 0
+root = -100
+Xn.append(prev)
+for i in range(100):
+    curr = prev - function1(prev) / function1_derivative(prev)
+    Xn.append(curr)
+    hata_degerleri.append(abs(curr - prev))
+    if abs(curr - prev) < pow(10, -15):
+        root = curr
+        break
+    else:
+        root = curr
+        prev = curr
+print("Newton-RaphsonRoot", root)
+
+plot.grid(True, which="both")
+plot.semilogy(hata_degerleri, label="Newton-Raphson Hata Değerleri")
+
+Xn_bisection = []
+hata_degerleri_bisection = []
+
+left = 0 #0 ve 1 aralığı ile başladık 0.5 aralıklarla ilerledik
+right = 1
+root = -100
+prev = 0.5
+Xn_bisection.append(prev)
+if function1(prev) <= 0:
+    right = prev
+else:
+    left = prev
+for i in range(100):
+    half = (left + right) / 2
+    Xn_bisection.append(half)
+    hata_degerleri_bisection.append(abs(half - prev))
+    if abs(half - prev) < pow(10, -15):
+        root = half
+        break
+    else:
+        if function1(half) < 0:
+            right = half
+        elif function1(half) > 0:
+            left = half
+        else:
+            root = half
+            break
+        root = half
+        prev = half
+plot.grid(True, which="both")
+plot.semilogy(hata_degerleri_bisection, label="Bisection Hata Değerleri")
+print("Bisection Root:", root)
+
+Xn_regula_falsi = []
+hata_degerleri_regula_falsi = []
+
+left = 0 
+right = 1
+root = -100
+prev = 0.5 #aynı şekilde 0.5 aralıklarla iterasyon çalışır
+Xn_regula_falsi.append(prev)
+for i in range(100):
+    root = right - (regula_falsi_function(right) * (right - left)) / (regula_falsi_function(right) - regula_falsi_function(left))
+    Xn_regula_falsi.append(root)
+    hata_degerleri_regula_falsi.append(abs(root - prev))
+    if abs(root - prev) < pow(10, -15):
+        break
+    else:
+        if regula_falsi_function(root) * regula_falsi_function(left) < 0:
+            right = root
+        else:
+            left = root
+        prev = root
+print("Regula Falsi Root:", root)
+
+plot.grid(True, which="both")
+plot.semilogy(hata_degerleri_regula_falsi, label="Regula Falsi Hata Değerleri")
+#NEWTON RAPHSON Türev kullandığı için diğerlerine göre daha hızlı yakınsar. Spyder üzerinden çalıştırdığımızda kod grafiğini görüp her yöntem için kıyaslayabiliriz
+
+plot.legend()
+plot.show()

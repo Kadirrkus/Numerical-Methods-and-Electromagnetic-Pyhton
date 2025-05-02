@@ -1,0 +1,58 @@
+#ELEKTROMANYETİK ÖDEV 1.SORU (PYHTON) Merhabalar hocam Pyhton dili ile yazdığım ödevi spyder gibi derleyicilerde çalıştırabilirsiniz . 
+# iyi günler dilerim
+import numpy as np
+import matplotlib.pyplot as plt
+
+a = 1
+Ro_s_bolu_2e0 = 1
+
+# Z ekseni değerleri ve aralığı
+z_degerleri = np.arange(-5, 5.1, 0.1)
+
+# Elektrik alanın hesaplanması
+E_z_formul = Ro_s_bolu_2e0 * (1 - z_degerleri / np.sqrt(z_degerleri**2 + a**2))
+
+#çizim
+plt.figure(figsize=(10, 6))
+plt.plot(z_degerleri, E_z_formul, label='Ez(z)')
+plt.title('Dairesel Diskin Z Ekseni Boyunca Elektrik Alanı')
+plt.xlabel('z ekseni (cm)')
+plt.ylabel('Ez (V/m)')
+plt.grid(True)
+plt.legend()
+plt.show()
+
+ELEKTROMANYETİK 2.SORU (PYHTON)
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+a, b, c = 1, 2, 3
+yukler = [4, -8, 8]  # Q(1), Q(2), Q(3)
+
+# r değerleri
+r_degerleri = np.arange(0, 51, 1)  # r, 0'dan 50'ye kadar 1'er adım
+
+# Elektrik alan hesaplama
+E_degerleri = []
+for r in r_degerleri:
+    if r < a:
+        E = 0
+    elif a <= r < b:
+        E = 4 / r**2
+    elif b <= r < c:
+        E = -4 / r**2
+    else:  # r >= c
+        E = 4 / r**2
+    E_degerleri.append(E)
+
+# Çizim
+plt.figure(figsize=(10, 6))
+plt.plot(r_degerleri, E_degerleri, label='E(r)')
+plt.title('Eş Eksenli Küre Kabukları Elektrik Alanı')
+plt.xlabel('r (metre)')
+plt.ylabel('E (N/C)')
+plt.grid(True)
+plt.legend()
+plt.show()
